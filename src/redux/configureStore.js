@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import thunk from 'redux-thunk';
-import todo from './modules/todo';
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { currencyApi } from './data/data';
 
-const reducer = combineReducers({
-  todo,
+const store = configureStore({
+  reducer: {
+    [currencyApi.reducerPath]: currencyApi.reducer,
+  },
+  middleware: (getDefaultMiddiware) => getDefaultMiddiware().concat(currencyApi.middleware),
 });
 
-const store = createStore(
-  reducer,
-  applyMiddleware(thunk),
-);
+setupListeners(store.dispatch);
 export default store;
