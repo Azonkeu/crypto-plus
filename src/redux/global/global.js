@@ -4,14 +4,14 @@ import axios from 'axios';
 
 const initialState = [];
 
-export const fetchData = (payload) => ({
-  type: 'FETCH_DATA',
+export const fetchGlobal = (payload) => ({
+  type: 'FETCH_GLOBAL',
   payload,
 });
 
-export const fetchApiData = () => async (dispatch) => {
+export const fetchApiGlobal = () => async (dispatch) => {
   try {
-    const response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=b83dd794-1851-4991-9ef9-6399e8254c90&start=1&limit=5000&convert=USD', {
+    const response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=b83dd794-1851-4991-9ef9-6399e8254c90', {
       headers: {
         'CMC_PRO_API_KEY': 'b83dd794-1851-4991-9ef9-6399e8254c90',
         'Accept': 'application/json',
@@ -21,16 +21,16 @@ export const fetchApiData = () => async (dispatch) => {
     if (response) {
       const json = response.data;
       const newArr = json.data.slice(0, 30);
-      dispatch(fetchData(newArr));
+      dispatch(fetchGlobal(newArr));
     }
   } catch (error) {
     return error;
   }
 };
 
-const dataReducer = (state = initialState, action) => {
+const globalReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_DATA':
+    case 'FETCH_GLOBAL':
       return action.payload;
       /* eslint-disable no-labels, no-unreachable */
       break;
@@ -39,4 +39,4 @@ const dataReducer = (state = initialState, action) => {
   }
 };
 
-export default dataReducer;
+export default globalReducer;

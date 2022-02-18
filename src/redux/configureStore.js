@@ -1,13 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { currencyApi } from './data/data';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
+import dataReducer from './data/data';
+import marketReducer from './market/market';
+import coinReducer from './coin/coin';
+import globalReducer from './global/global';
 
-const store = configureStore({
-  reducer: {
-    [currencyApi.reducerPath]: currencyApi.reducer,
-  },
-  middleware: (getDefaultMiddiware) => getDefaultMiddiware().concat(currencyApi.middleware),
+const reducer = combineReducers({
+  dataReducer,
+  marketReducer,
+  coinReducer,
+  globalReducer,
 });
 
-setupListeners(store.dispatch);
+const store = createStore(
+  reducer,
+  applyMiddleware(thunk),
+);
+
 export default store;
